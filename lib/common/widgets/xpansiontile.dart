@@ -30,9 +30,7 @@ class XpansionTile extends ConsumerWidget {
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
       child: Theme(
-          data: Theme.of(context).copyWith(
-            dividerColor: Colors.transparent,
-          ),
+          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
             title: BottomTitles(text: text, text2: text2),
             tilePadding: EdgeInsets.zero,

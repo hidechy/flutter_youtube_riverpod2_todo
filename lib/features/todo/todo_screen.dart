@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:test_debstech_riverpod2_todo_app/common/widgets/todo_tile.dart';
+import 'package:test_debstech_riverpod2_todo_app/common/widgets/xpansiontile.dart';
+import 'package:test_debstech_riverpod2_todo_app/controllers/xpansion_provider.dart';
+import 'package:test_debstech_riverpod2_todo_app/extensions/extensions.dart';
 
 import '../../common/utils/constants.dart';
 import '../../common/widgets/appstyle.dart';
@@ -9,6 +13,7 @@ import '../../common/widgets/custom_textfield.dart';
 import '../../common/widgets/height_spacer.dart';
 import '../../common/widgets/reusable_text.dart';
 import '../../common/widgets/width_spacer.dart';
+import 'add_task.dart';
 
 class TodoScreen extends ConsumerStatefulWidget {
   const TodoScreen({super.key});
@@ -84,14 +89,10 @@ class _HomePageState extends ConsumerState<TodoScreen> with TickerProviderStateM
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const AddTask(),
-                          //   ),
-                          // );
-                          //
-                          //
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const AddTask()),
+                          );
                         },
                         child: const Center(
                           child: Icon(Icons.add, color: AppConst.kBackgroundDark),
@@ -190,8 +191,19 @@ class _HomePageState extends ConsumerState<TodoScreen> with TickerProviderStateM
                         controller: tabController,
                         children: [
                           Container(
-                            color: AppConst.kBlueLight,
+                            color: AppConst.kBackgroundLight,
                             height: AppConst.kHeight * 0.3,
+
+                            child: ListView(
+                              children: [
+                                TodoTile(
+                                  start: '03:00',
+                                  end: '18:00',
+                                  child: Switch(value: true, onChanged: (value) {}),
+                                ),
+                              ],
+                            ),
+
                             // child: const TodoListView(),
                             //
                             //
@@ -200,6 +212,7 @@ class _HomePageState extends ConsumerState<TodoScreen> with TickerProviderStateM
                           Container(
                             color: AppConst.kBackgroundLight,
                             height: AppConst.kHeight * 0.3,
+
                             // child: const CompletedListView(),
                             //
                             //
@@ -209,12 +222,34 @@ class _HomePageState extends ConsumerState<TodoScreen> with TickerProviderStateM
                       ),
                     ),
                   ),
-                  // const HeightSpacer(size: 20),
-                  // const TomorrowList(),
-                  // const HeightSpacer(size: 20),
-                  // const DayAferTomorrow()
-                  //
-                  //
+                  const HeightSpacer(size: 20),
+                  XpansionTile(
+                    text: 'Tomorrow Task',
+                    text2: 'bbbbbbb',
+                    trailing: Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: ref.watch(xpansionStateProvider)
+                          ? const Icon(AntDesign.clockcircle)
+                          : const Icon(AntDesign.circledown),
+                    ),
+                    onExpansionChanged: (bool expanded) =>
+                        ref.read(xpansionStateProvider.notifier).changeState(expanded),
+                    children: const [Text('aaa')],
+                  ),
+                  const HeightSpacer(size: 20),
+                  XpansionTile(
+                    text: DateTime.now().add(const Duration(days: 2)).yyyymmdd,
+                    text2: 'ccccc',
+                    trailing: Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: ref.watch(xpansionState0Provider)
+                          ? const Icon(AntDesign.clockcircle)
+                          : const Icon(AntDesign.circledown),
+                    ),
+                    onExpansionChanged: (bool expanded) =>
+                        ref.read(xpansionState0Provider.notifier).changeState(expanded),
+                    children: const [Text('bbb')],
+                  ),
                 ],
               );
             },
